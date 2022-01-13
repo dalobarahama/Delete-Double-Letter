@@ -25,17 +25,22 @@ public class Solution {
         }
 
         StringBuilder stringBuilder2 = new StringBuilder();
-        do {
+        while (checkDoubleLetter) {
             for (int i = 0; i < a.length() - 1; i++) {
+                String newString = null;
                 if (a.charAt(i) == a.charAt(i + 1)) {
                     String doubleLetter = stringBuilder2.append(a.charAt(i)).toString();
-                    String newString = a.replace(doubleLetter, "");
-                    a = newString;
+                    newString = a.replace(doubleLetter, "");
+
                     System.out.println(newString);
                 }
-
+                a = newString;
             }
-        }while (checkDoubleLetter);
+            if (a.equals("")) {
+                checkDoubleLetter = false;
+            }
+        }
+
 
     }
 
