@@ -4,43 +4,27 @@ import java.util.Scanner;
 
 public class Solution {
 
+
+    private static String alphabet;
+    private static String checkedString;
+    private static boolean checkDoubleLetter = true;
+
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String k = in.nextLine();
 
-        boolean checkDoubleLetter = true;
+        checkConstraints(k);
 
-        char[] chars = k.toCharArray();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (char c : chars) {
-            if (Character.isAlphabetic(c)) {
-                stringBuilder.append(c);
-            }
-        }
-
-        String a = stringBuilder.toString().toLowerCase();
-
-        if (k.length() >= 50) {
-            a = a.substring(0, 50);
-        }
-
-        StringBuilder stringBuilder2 = new StringBuilder();
         while (checkDoubleLetter) {
-            for (int i = 0; i < a.length() - 1; i++) {
-                String newString = null;
-                if (a.charAt(i) == a.charAt(i + 1)) {
-                    String doubleLetter = stringBuilder2.append(a.charAt(i)).toString();
-                    newString = a.replace(doubleLetter, "");
-
-                    System.out.println(newString);
-                }
-                a = newString;
-            }
-            if (a.equals("")) {
+            if (checkedString.equals("")) {
                 checkDoubleLetter = false;
+                checkedString = "Possible";
+            } else {
+                deleteDoubleLetter();
             }
         }
 
+        System.out.println(checkedString);
 
     }
 
@@ -49,19 +33,18 @@ public class Solution {
      * K contains between 1 and 50 characters.
      * Each character in K will be a lowercase character ('a'-'z').
      **/
-    private static String checkConstraints(String k) {
-        checkContainNumber(k);
-        String a = k.toLowerCase();
+    private static void checkConstraints(String k) {
+        convertToAlphabetOnly(k);
+
+        checkedString = alphabet;
 
         if (k.length() >= 50) {
-            a = a.substring(0, 50);
+            checkedString = checkedString.substring(0, 50);
         }
 
-        System.out.println(a);
-        return a;
     }
 
-    private static String checkContainNumber(String k) {
+    private static void convertToAlphabetOnly(String k) {
         char[] chars = k.toCharArray();
         StringBuilder stringBuilder = new StringBuilder();
         for (char c : chars) {
@@ -70,8 +53,18 @@ public class Solution {
             }
         }
 
-//        System.out.println(stringBuilder);
-        return stringBuilder.toString();
+        alphabet = stringBuilder.toString();
+
+    }
+
+    private static void deleteDoubleLetter() {
+        for (int i = 0; i < checkedString.length() - 1; i++) {
+            StringBuilder stringBuilder2 = new StringBuilder();
+            if (checkedString.charAt(i) == checkedString.charAt(i + 1)) {
+                String doubleLetter = stringBuilder2.append(checkedString.charAt(i)).toString();
+                checkedString = checkedString.replace(doubleLetter, "");
+            }
+        }
     }
 
 }
