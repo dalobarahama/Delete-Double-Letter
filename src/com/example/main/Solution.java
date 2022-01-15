@@ -4,44 +4,36 @@ import java.util.Scanner;
 
 public class Solution {
 
-
-    private static String alphabet;
+    private static String alphabetOnly;
     private static String checkedString;
-    private static boolean checkDoubleLetter = true;
+    private static int checkedStringLength;
+    private static String doubleLetter;
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String k = in.nextLine();
 
         checkConstraints(k);
+        checkDoubleLetter();
 
-        while (checkDoubleLetter) {
-            if (checkedString.equals("")) {
-                checkDoubleLetter = false;
-                checkedString = "Possible";
-            } else {
-                deleteDoubleLetter();
-            }
+        if (checkedString.equals("") && isLengthEven()) {
+            System.out.println("Possible");
+        } else {
+            System.out.println("Impossible");
         }
-
-        System.out.println(checkedString);
 
     }
 
-    /**
-     * CONSTRAINTS
-     * K contains between 1 and 50 characters.
-     * Each character in K will be a lowercase character ('a'-'z').
-     **/
-    private static void checkConstraints(String k) {
-        convertToAlphabetOnly(k);
+    private static void checkConstraints(String stringInput) {
+        convertToAlphabetOnly(stringInput);
 
-        checkedString = alphabet;
+        checkedString = alphabetOnly;
 
-        if (k.length() >= 50) {
+        if (stringInput.length() >= 50) {
             checkedString = checkedString.substring(0, 50);
         }
 
+        checkedStringLength = checkedString.length();
     }
 
     private static void convertToAlphabetOnly(String k) {
@@ -53,18 +45,32 @@ public class Solution {
             }
         }
 
-        alphabet = stringBuilder.toString();
+        alphabetOnly = stringBuilder.toString();
 
     }
 
-    private static void deleteDoubleLetter() {
-        for (int i = 0; i < checkedString.length() - 1; i++) {
-            StringBuilder stringBuilder2 = new StringBuilder();
-            if (checkedString.charAt(i) == checkedString.charAt(i + 1)) {
-                String doubleLetter = stringBuilder2.append(checkedString.charAt(i)).toString();
-                checkedString = checkedString.replace(doubleLetter, "");
+    private static void checkDoubleLetter() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < checkedStringLength; i++) {
+            for (int j = 0; j < i; j++) {
+                if (checkedString.charAt(i) == checkedString.charAt(j)) {
+                    doubleLetter = stringBuilder.append(checkedString.charAt(i)).toString();
+                }
             }
+
         }
+
+        deleteDoubleLetter();
+    }
+
+    private static void deleteDoubleLetter() {
+        for (char c : doubleLetter.toCharArray()) {
+            checkedString = checkedString.replace(String.valueOf(c), "");
+        }
+    }
+
+    private static boolean isLengthEven() {
+        return checkedStringLength % 2 == 0;
     }
 
 }
